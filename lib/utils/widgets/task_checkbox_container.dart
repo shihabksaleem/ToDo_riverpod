@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:todo_riverpod/home_screen.dart';
+import 'package:todo_riverpod/view/home_screen.dart';
 
-class TaskCheckboxContainer extends StatelessWidget {
-  final WidgetRef ref;
-
+class TaskCheckboxContainer extends ConsumerWidget {
   final int index;
 
-  TaskCheckboxContainer({required this.ref, required this.index});
+  TaskCheckboxContainer({required this.index});
 
   @override
-  Widget build(BuildContext context) {
-    bool isChecked = false;
+  Widget build(BuildContext context, WidgetRef ref) {
+    // bool isChecked = false;
     final todoList = ref.watch(todoProvider);
+    // final todoListreversed = List.from(todoList.reversed);
     return Slidable(
       closeOnScroll: true,
       endActionPane: ActionPane(motion: StretchMotion(), children: [
@@ -29,13 +28,16 @@ class TaskCheckboxContainer extends StatelessWidget {
       ]),
       child: GestureDetector(
         onTap: () {
-          isChecked = !isChecked;
+          ref.read(todoProvider.notifier).toggle(index);
+          print(index);
+          print(todoList[index].isCompleted);
+          print(todoList[index].index);
         },
         child: Container(
           height: 70,
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
-              color: Color(0xff041955),
+              color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(20)),
           child: Row(
             children: [
@@ -48,7 +50,7 @@ class TaskCheckboxContainer extends StatelessWidget {
                       color: Color(0xffeb06ff),
                       width: 2,
                     ),
-                    value: isChecked,
+                    value: todoList[index].isCompleted,
                     checkColor: Colors.white,
                     activeColor: Color(0xff3450a1),
                     shape: RoundedRectangleBorder(
@@ -57,7 +59,8 @@ class TaskCheckboxContainer extends StatelessWidget {
                       ),
                     ),
                     onChanged: (value) {
-                      isChecked = !isChecked;
+                      ref.read(todoProvider.notifier).toggle(index);
+                      print(index);
                     },
                   ),
                 ),
@@ -66,7 +69,9 @@ class TaskCheckboxContainer extends StatelessWidget {
                 child: Text(
                   todoList[index].taskName,
                   style: TextStyle(
-                      decoration: isChecked ? TextDecoration.lineThrough : null,
+                      decoration: todoList[index].isCompleted
+                          ? TextDecoration.lineThrough
+                          : null,
                       decorationColor: Color(0xffeb06ff),
                       decorationThickness: 3),
                 ),

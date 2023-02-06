@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo_riverpod/home_screen.dart';
-import 'package:todo_riverpod/utils/theme/theme.dart';
+import 'package:todo_riverpod/view/home_screen.dart';
+import 'package:todo_riverpod/utils/theme/my_app_theme.dart';
 
 void main(List<String> args) {
   runApp(ProviderScope(child: MyApp()));

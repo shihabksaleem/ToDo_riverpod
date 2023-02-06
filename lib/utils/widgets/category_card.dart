@@ -18,7 +18,9 @@ class CategoryCard extends StatelessWidget {
       stepWidth: MediaQuery.of(context).size.width * .25,
       child: Container(
         decoration: BoxDecoration(
-            color: Color(0xff041955), borderRadius: BorderRadius.circular(15)),
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(15),
+        ),
         padding: EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo_riverpod/res/model%20class/todo_model.dart';
-import 'package:todo_riverpod/res/providers/todo_notifier.dart';
+import 'package:todo_riverpod/model/todo_model.dart';
 
-import 'package:todo_riverpod/res/widgets/category_card.dart';
-import 'package:todo_riverpod/res/widgets/custom_drawer.dart';
-import 'package:todo_riverpod/res/widgets/task_checkbox_container.dart';
+import 'package:todo_riverpod/utils/widgets/category_card.dart';
+import 'package:todo_riverpod/utils/widgets/custom_drawer.dart';
+import 'package:todo_riverpod/utils/widgets/task_checkbox_container.dart';
+import 'package:todo_riverpod/view_model/providers/todo_notifier.dart';
 
 final todoProvider =
     StateNotifierProvider<TodoNotifier, List<TodoMOdel>>((ref) {
@@ -115,18 +115,18 @@ class HomeScreen extends ConsumerWidget {
             ),
             SizedBox(height: 20),
             Expanded(
+                flex: 2,
                 child: todoList.isNotEmpty
                     ? ListView.separated(
+                        shrinkWrap: true,
                         padding: EdgeInsets.all(20),
-                        itemBuilder: (context, index) => TaskCheckboxContainer(
-                              ref: ref,
-                              index: index,
-                            ),
+                        itemBuilder: (context, index) =>
+                            TaskCheckboxContainer(index: index),
                         separatorBuilder: (context, index) => SizedBox(
                               height: 10,
                             ),
                         itemCount: todoList.length)
-                    : Center(child: Text('Add New Tasks')))
+                    : Center(child: Text('Add New Tasks'))),
           ]),
         ),
       ),
@@ -137,11 +137,12 @@ class HomeScreen extends ConsumerWidget {
   Future<dynamic> AddTaskPopup(BuildContext context, WidgetRef ref) {
     final TextEditingController newtaskController = TextEditingController();
     final todoList = ref.watch(todoProvider);
+    int id = todoList.length;
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        backgroundColor: Color(0xff041955),
+        backgroundColor: Theme.of(context).cardColor,
         title: Center(child: Text('Create new task')),
         actions: [
           TextField(
@@ -163,14 +164,18 @@ class HomeScreen extends ConsumerWidget {
                           MaterialStateProperty.all(Color(0xff3450a1))),
                   onPressed: () {
                     //Add new task to the list
-                    if (newtaskController.text == null ||
-                        newtaskController.text.isEmpty) {
+                    if (newtaskController.text.trim() == null ||
+                        newtaskController.text.trim().isEmpty) {
                       return Navigator.pop(context);
                     } else {
+                      // to increment the id
+
                       ref.read(todoProvider.notifier).addTask(TodoMOdel(
+                          index: id,
                           category: 'Professional',
                           taskName: newtaskController.text));
                       Navigator.pop(context);
+                      print(id.toString());
                     }
                   },
                   child: Text(

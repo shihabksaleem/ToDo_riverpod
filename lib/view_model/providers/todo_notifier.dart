@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo_riverpod/res/model%20class/todo_model.dart';
+import 'package:todo_riverpod/model/todo_model.dart';
 
 class TodoNotifier extends StateNotifier<List<TodoMOdel>> {
   TodoNotifier() : super([]);
@@ -10,5 +10,15 @@ class TodoNotifier extends StateNotifier<List<TodoMOdel>> {
 
   void deleteTask(TodoMOdel todo) {
     state = state.where((_todo) => _todo != todo).toList();
+  }
+
+  void toggle(int id) {
+    state = [
+      for (final todo in state)
+        if (todo.index == id)
+          todo.copyWith(isCompleted: !todo.isCompleted)
+        else
+          todo
+    ];
   }
 }
