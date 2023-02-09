@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:todo_riverpod/view/home_screen.dart';
+import 'package:todo_riverpod/view_model/providers/todo_notifier.dart';
 
 class TaskCheckboxContainer extends ConsumerWidget {
   final int index;
@@ -15,17 +15,20 @@ class TaskCheckboxContainer extends ConsumerWidget {
     // final todoListreversed = List.from(todoList.reversed);
     return Slidable(
       closeOnScroll: true,
-      endActionPane: ActionPane(motion: StretchMotion(), children: [
-        SlidableAction(
-          backgroundColor: Colors.white30,
-          foregroundColor: Color(0xff041955),
-          onPressed: (context) {
-            ref.read(todoProvider.notifier).deleteTask(todoList[index]);
-          },
-          borderRadius: BorderRadius.circular(20),
-          icon: Icons.delete,
-        )
-      ]),
+      endActionPane: ActionPane(
+        motion: StretchMotion(),
+        children: [
+          SlidableAction(
+            backgroundColor: Colors.white30,
+            foregroundColor: Color(0xff041955),
+            onPressed: (context) {
+              ref.read(todoProvider.notifier).deleteTask(todoList[index]);
+            },
+            borderRadius: BorderRadius.circular(20),
+            icon: Icons.delete,
+          )
+        ],
+      ),
       child: GestureDetector(
         onTap: () {
           ref.read(todoProvider.notifier).toggle(index);
@@ -66,8 +69,11 @@ class TaskCheckboxContainer extends ConsumerWidget {
                 ),
               ),
               Container(
+                width: MediaQuery.of(context).size.width * .7,
                 child: Text(
                   todoList[index].taskName,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                       decoration: todoList[index].isCompleted
                           ? TextDecoration.lineThrough

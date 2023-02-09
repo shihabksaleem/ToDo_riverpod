@@ -4,7 +4,7 @@ class CustomAppBar extends StatelessWidget {
   List drawerItemList = [
     {
       'icon': Icons.bookmark_outline,
-      'title': 'Templats',
+      'title': 'Templates',
     },
     {
       'icon': Icons.widgets_outlined,
@@ -12,7 +12,7 @@ class CustomAppBar extends StatelessWidget {
     },
     {
       'icon': Icons.data_usage,
-      'title': 'Templats',
+      'title': 'Analysis',
     }
   ];
   @override

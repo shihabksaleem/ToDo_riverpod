@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo_riverpod/view/home_screen.dart';
+import 'package:todo_riverpod/view/first_screen.dart';
 import 'package:todo_riverpod/utils/theme/my_app_theme.dart';
 
 void main(List<String> args) {
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       darkTheme: MyAppTheme.darkTheme,
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
+      home: FirstScreen(),
     );
   }
 }

@@ -1,21 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo_riverpod/model/todo_model.dart';
+import 'package:todo_riverpod/utils/widgets/add_task_popup.dart';
 
 import 'package:todo_riverpod/utils/widgets/category_card.dart';
 import 'package:todo_riverpod/utils/widgets/custom_drawer.dart';
 import 'package:todo_riverpod/utils/widgets/task_checkbox_container.dart';
 import 'package:todo_riverpod/view_model/providers/todo_notifier.dart';
 
-final todoProvider =
-    StateNotifierProvider<TodoNotifier, List<TodoMOdel>>((ref) {
-  return TodoNotifier();
-});
-
 class HomeScreen extends ConsumerWidget {
   final _advancedDrawerController = AdvancedDrawerController();
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final todoList = ref.watch(todoProvider);
@@ -33,7 +27,7 @@ class HomeScreen extends ConsumerWidget {
       drawer: CustomAppBar(),
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
-          onPressed: () => AddTaskPopup(context, ref),
+          onPressed: () => AddNewTaskPopup(context, ref),
           child: const Icon(Icons.add),
         ),
         appBar: AppBar(
@@ -71,120 +65,70 @@ class HomeScreen extends ConsumerWidget {
             )
           ],
         ),
-        body: Container(
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Whats up, Shihab!',
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  SizedBox(height: 20),
-                  const Text('Categories'),
-                ],
-              ),
-            ),
-            SizedBox(height: 20),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Row(
+        body: SafeArea(
+          child: Container(
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CategoryCard(
-                        progressColor: Color(0xffeb06ff),
-                        Title: 'Professional',
-                        numberOfTasks: 40),
-                    SizedBox(width: 15),
-                    CategoryCard(
-                        progressColor: Color(0xff0568fd),
-                        Title: 'Personal',
-                        numberOfTasks: 18),
+                    Text(
+                      'Whats up, Shihab!',
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                    SizedBox(height: 20),
+                    const Text('Categories'),
                   ],
                 ),
               ),
-            ),
-            SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: const Text('Todays Tasks'),
-            ),
-            SizedBox(height: 20),
-            Expanded(
-                flex: 2,
-                child: todoList.isNotEmpty
-                    ? ListView.separated(
-                        shrinkWrap: true,
-                        padding: EdgeInsets.all(20),
-                        itemBuilder: (context, index) =>
-                            TaskCheckboxContainer(index: index),
-                        separatorBuilder: (context, index) => SizedBox(
-                              height: 10,
-                            ),
-                        itemCount: todoList.length)
-                    : Center(child: Text('Add New Tasks'))),
-          ]),
-        ),
-      ),
-    );
-  }
-
-//
-  Future<dynamic> AddTaskPopup(BuildContext context, WidgetRef ref) {
-    final TextEditingController newtaskController = TextEditingController();
-    final todoList = ref.watch(todoProvider);
-    int id = todoList.length;
-    return showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        backgroundColor: Theme.of(context).cardColor,
-        title: Center(child: Text('Create new task')),
-        actions: [
-          TextField(
-            controller: newtaskController,
-            textAlign: TextAlign.center,
-            decoration: InputDecoration(
-                hintText: 'Enter new task',
-                enabledBorder: InputBorder.none,
-                focusedBorder: InputBorder.none),
+              SizedBox(height: 20),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Row(
+                    children: [
+                      CategoryCard(
+                          progressColor: Color(0xffeb06ff),
+                          Title: 'Professional',
+                          numberOfTasks: 40),
+                      SizedBox(width: 15),
+                      CategoryCard(
+                          progressColor: Color(0xff0568fd),
+                          Title: 'Personal',
+                          numberOfTasks: 18),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: const Text('Todays Tasks'),
+              ),
+              SizedBox(height: 20),
+              Expanded(
+                  flex: 2,
+                  child: todoList.isNotEmpty
+                      ? Align(
+                          alignment: Alignment.topCenter,
+                          child: ListView.separated(
+                              shrinkWrap: true,
+                              reverse: true,
+                              padding: EdgeInsets.all(20),
+                              itemBuilder: (context, index) =>
+                                  TaskCheckboxContainer(index: index),
+                              separatorBuilder: (context, index) => SizedBox(
+                                    height: 10,
+                                  ),
+                              itemCount: todoList.length),
+                        )
+                      : Center(child: Text('Add New Tasks'))),
+            ]),
           ),
-          Center(
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width * .35,
-              child: ElevatedButton(
-                  style: ButtonStyle(
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10))),
-                      backgroundColor:
-                          MaterialStateProperty.all(Color(0xff3450a1))),
-                  onPressed: () {
-                    //Add new task to the list
-                    if (newtaskController.text.trim() == null ||
-                        newtaskController.text.trim().isEmpty) {
-                      return Navigator.pop(context);
-                    } else {
-                      // to increment the id
-
-                      ref.read(todoProvider.notifier).addTask(TodoMOdel(
-                          index: id,
-                          category: 'Professional',
-                          taskName: newtaskController.text));
-                      Navigator.pop(context);
-                      print(id.toString());
-                    }
-                  },
-                  child: Text(
-                    'Add',
-                    style: Theme.of(context).textTheme.labelLarge,
-                  )),
-            ),
-          )
-        ],
+        ),
       ),
     );
   }

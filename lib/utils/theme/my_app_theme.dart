@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:todo_riverpod/utils/theme/app_bar_theme.dart';
+import 'package:todo_riverpod/utils/theme/button_theme.dart';
 import 'package:todo_riverpod/utils/theme/text_theme.dart';
 
 class MyAppTheme {
   static ThemeData lightTheme = ThemeData(
-    brightness: Brightness.light,
-    scaffoldBackgroundColor: const Color(0xfff8faff),
-    appBarTheme: MyAppBarTheme.lightAppBarTheme,
-    floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: Color(0xff0568fd),
-    ),
-    drawerTheme: DrawerThemeData(backgroundColor: Colors.grey.shade300),
-    textTheme: MyTextTheme.lightTextTheme,
-    cardColor: Colors.grey.shade300,
-  );
+      brightness: Brightness.light,
+      scaffoldBackgroundColor: const Color(0xfff8faff),
+      appBarTheme: MyAppBarTheme.lightAppBarTheme,
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
+        backgroundColor: Color(0xff0568fd),
+      ),
+      drawerTheme: DrawerThemeData(backgroundColor: Colors.grey.shade300),
+      textTheme: MyTextTheme.lightTextTheme,
+      cardColor: Colors.grey.shade300,
+      elevatedButtonTheme: MyButtomtheme.MyLightButtonTheme);
 
   static ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,

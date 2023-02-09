@@ -22,3 +22,8 @@ class TodoNotifier extends StateNotifier<List<TodoMOdel>> {
     ];
   }
 }
+
+final todoProvider =
+    StateNotifierProvider<TodoNotifier, List<TodoMOdel>>((ref) {
+  return TodoNotifier();
+});
