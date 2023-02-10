@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_riverpod/utils/widgets/custom_textform_filed.dart';
 import 'package:todo_riverpod/view/home_screen.dart';
 
 class FirstScreen extends StatelessWidget {
@@ -39,29 +40,6 @@ class FirstScreen extends StatelessWidget {
                 )
               ],
             )),
-      ),
-    );
-  }
-}
-
-class CustomTextformfield extends StatelessWidget {
-  final String hint;
-
-  const CustomTextformfield({super.key, required this.hint});
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      decoration: InputDecoration(
-        filled: true,
-        fillColor: Theme.of(context).cardTheme.color,
-        hintText: hint,
-        enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            borderSide: BorderSide.none),
-        focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            borderSide: BorderSide.none),
       ),
     );
   }

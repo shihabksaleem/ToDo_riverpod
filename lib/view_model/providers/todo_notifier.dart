@@ -8,8 +8,12 @@ class TodoNotifier extends StateNotifier<List<TodoMOdel>> {
     state = [...state, todo];
   }
 
-  void deleteTask(TodoMOdel todo) {
+  void deleteTask({required TodoMOdel todo, required int id}) {
     state = state.where((_todo) => _todo != todo).toList();
+    state = [
+      for (final todo in state)
+        if (todo.index > id) todo.copyWith(index: todo.index - 1) else todo
+    ];
   }
 
   void toggle(int id) {

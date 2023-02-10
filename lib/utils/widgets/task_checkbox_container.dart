@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:todo_riverpod/model/todo_model.dart';
 import 'package:todo_riverpod/view_model/providers/todo_notifier.dart';
 
 class TaskCheckboxContainer extends ConsumerWidget {
@@ -22,7 +23,9 @@ class TaskCheckboxContainer extends ConsumerWidget {
             backgroundColor: Colors.white30,
             foregroundColor: Color(0xff041955),
             onPressed: (context) {
-              ref.read(todoProvider.notifier).deleteTask(todoList[index]);
+              ref
+                  .read(todoProvider.notifier)
+                  .deleteTask(todo: todoList[index], id: todoList[index].index);
             },
             borderRadius: BorderRadius.circular(20),
             icon: Icons.delete,

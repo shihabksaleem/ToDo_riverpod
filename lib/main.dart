@@ -4,7 +4,11 @@ import 'package:todo_riverpod/view/first_screen.dart';
 import 'package:todo_riverpod/utils/theme/my_app_theme.dart';
 
 void main(List<String> args) {
-  runApp(ProviderScope(child: MyApp()));
+  runApp(
+    ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
